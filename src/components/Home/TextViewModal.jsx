@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { MdDelete } from "react-icons/md";
 import { TiEdit } from "react-icons/ti";
+import { TodoContext } from '../../context/ToDoContext';
+import { ToastContainer, toast } from 'react-toastify';
 
-const TextViewModal = ({ title, description, flag, setTodoContent, todoContent }) => {
-
+const TextViewModal = ({ title, description, flag, setTodoContent, todoContent, todoId }) => {
+    const { todo, setTodo } = useContext(TodoContext)
     useEffect(() => {
         const handleKeyPress = (e) => {
           if (e.key === 'Escape') {
@@ -20,8 +22,49 @@ const TextViewModal = ({ title, description, flag, setTodoContent, todoContent }
         };
       }, []);
 
+      const deleteTodo = ()=>{
+        let updatedData = todo.filter((note)=> note._id !== todoId)
+        setTodo(updatedData)
+        setTodoContent({ ...todoContent, flag: false })
+        return toast.success('Note deleted successfully.', {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+      }
+
+      const updateNotes = () => {
+        return toast.info('feature is not implemented yet.', {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+
     return (
         <div id="default-modal" tabIndex="-1" aria-hidden="true" className={`${flag == true ? "" : "hidden"} overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full`}>
+            <ToastContainer
+                position="bottom-left"
+                autoClose={1000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
             <div className="relative p-4 w-full max-w-2xl max-h-full m-auto">
                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
@@ -42,8 +85,8 @@ const TextViewModal = ({ title, description, flag, setTodoContent, todoContent }
 
                     </div>
                     <div className="flex items-center p-2 justify-end border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <TiEdit className='text-blue-600 text-3xl max-md:text-2xl max-sm:text-xl cursor-pointer' />
-                        <MdDelete className='text-red-600 text-3xl max-md:text-2xl max-sm:text-xl cursor-pointer' />
+                        <TiEdit className='text-blue-600 text-3xl max-md:text-2xl max-sm:text-xl cursor-pointer' onClick={()=> updateNotes()}/>
+                        <MdDelete className='text-red-600 text-3xl max-md:text-2xl max-sm:text-xl cursor-pointer' onClick={()=> deleteTodo()}/>
                     </div>
                 </div>
             </div>

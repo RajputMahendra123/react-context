@@ -89,7 +89,7 @@ const Login = () => {
         pauseOnHover
         theme="light"
       />
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto h-screen lg:py-0">
 
         <div className='flex space-x-5 max-sm:flex-col justify-center items-center'>
           <img className="w-8 h-8 mr-2 my-2" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg" alt="logo" />

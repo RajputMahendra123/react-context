@@ -15,15 +15,38 @@ const Home = () => {
   const { todo, setTodo } = useContext(TodoContext)
   const { setUser, user } = useContext(UserContext)
   const navigate = useNavigate()
-  const [todoContent, setTodoContent] = useState({title:"", description:"", flag:false})
+  const [todoContent, setTodoContent] = useState({title:"", description:"", flag:false, id:""})
 
   const deleteTodo = (noteId)=>{
     let updatedData = todo.filter((note)=> note._id !== noteId)
     setTodo(updatedData)
+    return toast.success('Note deleted successfully.', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+
+  const updateNotes = () => {
+    return toast.info('feature is not implemented yet.', {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 
   const logout = ()=>{
-    toast.error('Logout sucessfully', {
+    toast.success('Logout sucessfully', {
       position: "top-right",
       autoClose: 2000,
       hideProgressBar: false,
@@ -54,11 +77,11 @@ const Home = () => {
         theme="light"
       />
 
-    <TextViewModal title={todoContent.title} description={todoContent.description} flag={todoContent.flag} setTodoContent={setTodoContent} todoContent={todoContent}/>
-    <div className="flex justify-evenly items-center h-[100px] max-sm:h-[100px] max-sm:justify-between  max-sm:w-[100vw] bg-black/5">
+    <TextViewModal title={todoContent.title} description={todoContent.description} todoId={todoContent.id} flag={todoContent.flag} setTodoContent={setTodoContent} todoContent={todoContent}/>
+    <div className="flex justify-evenly items-center h-[100px] max-sm:h-[150px] max-sm:justify-between  max-sm:w-[100vw] bg-black/5 max-sm:p-4">
       <div>
-      <span className='font-bold text-lg'>{greetingTime(new Date())}{", "}{user.name}</span>
-      <h1 className='font-bold font-mono max-sm:w-full text-center text-4xl max-sm:text-[20px] max-md:text-[30px]'>Keep Notes</h1>
+      <span className='font-bold text-lg max-sm:text-sm'>{greetingTime(new Date())}{", "}{user.name}</span>
+      <h1 className='font-bold font-mono max-sm:w-full text-4xl max-sm:text-sm max-sm:py-1 max-md:text-[30px]'>Keep Notes</h1>
       </div>
       <div className='sm:space-x-2 text-center  max-sm:w-full'>
         <Link to="/add-to-do">
@@ -85,8 +108,8 @@ const Home = () => {
               <div className='w-full font-bold text-sm px-2 h-1/5 max-sm:text-xl max-sm:my-2 max-sm:font-bold max-md:text-xs max-md:font-bold max-md:px-1 md:text-xl'> {note.title.slice(0,10)}...</div>
               <div className='w-full text-sm px-2 h-1/2 max-sm:h-0 max-sm:text-[10px] max-md:text-[11px] max-md:px-1 md:text-lg max-sm:text-lg max-sm:my-2 max-sm:1/2'>{note.description}</div>
               <div className='w-full h-1/5 flex space-x-2 justify-end items-center max-sm:1/2'>
-                <CgEyeAlt className='text-black text-[13px] md:text-2xl mt-0.5 cursor-pointer max-sm:text-xl' onClick={()=> setTodoContent({title:note.title,description:note.description, flag:true})}/>
-                <TiEdit className='text-blue-600 cursor-pointer md:text-2xl max-sm:text-2xl' onClick={()=>alert("feature is not implemented yet.")}/>
+                <CgEyeAlt className='text-black text-[13px] md:text-2xl mt-0.5 cursor-pointer max-sm:text-xl' onClick={()=> setTodoContent({title:note.title,description:note.description, flag:true, id:note._id})}/>
+                <TiEdit className='text-blue-600 cursor-pointer md:text-2xl max-sm:text-2xl' onClick={()=> updateNotes()}/>
                 <MdDelete className='text-red-600 cursor-pointer md:text-2xl max-sm:text-2xl'  onClick={()=> deleteTodo(note._id)}/>
               </div>
             </div>

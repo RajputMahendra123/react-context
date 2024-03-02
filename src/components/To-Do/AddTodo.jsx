@@ -1,4 +1,4 @@
-import React, { useContext, useState, useId } from 'react'
+import React, { useContext, useState, useId, useEffect } from 'react'
 import backgroundImage from './todoBg.jpg'
 import { Link } from 'react-router-dom';
 import { TodoContext } from '../../context/ToDoContext';
@@ -19,13 +19,47 @@ const AddTodo = () => {
   
   const [notes, setNotes] = useState({title : "", description : ""})
 
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.key === 'Escape') {
+        history("/home")
+      }
+    };
+
+    // Add event listener when component mounts
+    document.addEventListener('keydown', handleEsc);
+
+    // Clean up event listener when component unmounts
+    return () => {
+      document.removeEventListener('keydown', handleEsc);
+    };
+  }, []);
+
 
   const handleSubmit = (e)=> {
     e.preventDefault()
     if (notes.title.length <= 3) {
-      return alert("Atleast 3 characters are required in title")
+      return toast.info('Atleast 3 characters are required in title', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     } else if (notes.description.length <= 3) {
-      return alert("Atleast 3 characters are required in description")
+      return toast.info('Atleast 3 characters are required in description', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
 
     todo.push({title:notes.title, description:notes.description,_id})
@@ -63,7 +97,7 @@ const AddTodo = () => {
         pauseOnHover
         theme="light"
       />
-      <div className='h-[60%] w-[60%] max-sm:h-screen max-sm:w-full bg-white/80 max-md:h-[90%] max-md:w-[90%] sm:rounded-2xl p-20 max-sm:p-0'>
+      <div className='h-[60%] w-[60%] max-sm:h-screen max-sm:w-full bg-white/60 max-sm:bg-white/20 max-md:h-[90%] max-md:w-[90%] sm:rounded-2xl p-20 max-sm:p-0'>
 
         <form className="max-w-xl mx-auto my-4">
           <div className="mb-5 space-y-4 mx-2">
@@ -81,7 +115,7 @@ const AddTodo = () => {
           </div>
 
           <div className='w-full text-center'>
-            <button  onClick={(e)=>handleSubmit(e)}  className="text-white bg-blue-700/85 hover:bg-blue-700 font-bold rounded-lg text-lg w-1/3 m-auto  px-8 py-3 ">Add</button>
+            <button  onClick={(e)=>handleSubmit(e)}  className="text-white bg-blue-700/85 hover:bg-blue-700 font-bold rounded-lg text-lg w-1/3 m-auto  px-8 py-3">Add</button>
           </div>
         </form>
 
