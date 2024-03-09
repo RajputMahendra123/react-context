@@ -70,6 +70,8 @@ const Login = () => {
         navigate('/home')
       }, 1000);
 
+      localStorage.setItem("user_cred",JSON.stringify({email, password, name}))
+
       setUser({ email, password, name })
     }
 
@@ -103,7 +105,7 @@ const Login = () => {
             </h1>
             <form className="space-y-4 md:space-y-6">
               <div>
-                <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Name</label>
                 <input
                   type="text"
                   // name="email"

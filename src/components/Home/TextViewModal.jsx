@@ -2,73 +2,47 @@ import React, { useContext, useEffect, useState } from 'react'
 import { MdDelete } from "react-icons/md";
 import { TiEdit } from "react-icons/ti";
 import { TodoContext } from '../../context/ToDoContext';
-import { ToastContainer, toast } from 'react-toastify';
+import toast, { Toaster } from 'react-hot-toast';
 
 const TextViewModal = ({ title, description, flag, setTodoContent, todoContent, todoId }) => {
     const { todo, setTodo } = useContext(TodoContext)
     useEffect(() => {
         const handleKeyPress = (e) => {
-          if (e.key === 'Escape') {
-            setTodoContent({ ...todoContent, flag: false }) 
-          }
+            if (e.key === 'Escape') {
+                setTodoContent({ ...todoContent, flag: false })
+            }
         };
-    
+
         // Adding the event listener when the component mounts
         document.addEventListener('keydown', handleKeyPress);
-    
+
         // Cleaning up the event listener when the component unmounts
         return () => {
-          document.removeEventListener('keydown', handleKeyPress);
+            document.removeEventListener('keydown', handleKeyPress);
         };
-      }, []);
+    }, []);
 
-      const deleteTodo = ()=>{
-        let updatedData = todo.filter((note)=> note._id !== todoId)
+    const deleteTodo = () => {
+        let updatedData = todo.filter((note) => note._id !== todoId)
         setTodo(updatedData)
         setTodoContent({ ...todoContent, flag: false })
-        return toast.success('Note deleted successfully.', {
-            position: "top-right",
-            autoClose: 2000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-      }
+        return toast.success('Note deleted successfully.');
+    }
 
-      const updateNotes = () => {
-        return toast.info('feature is not implemented yet.', {
-          position: "top-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
+    const updateNotes = () => {
+        return toast.success('feature is not implemented yet.');
+    }
 
     return (
         <div id="default-modal" tabIndex="-1" aria-hidden="true" className={`${flag == true ? "" : "hidden"} overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full`}>
-            <ToastContainer
-                position="bottom-left"
-                autoClose={1000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="light"
+            <Toaster
+                position="top-right"
+                reverseOrder={false}
             />
             <div className="relative p-4 w-full max-w-2xl max-h-full m-auto">
                 <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                        <h3 className="text-xl font-semibold text-gray-900 dark:text-white overflow-auto">
                             {title}
                         </h3>
                         <button type="button" className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal" onClick={() => setTodoContent({ ...todoContent, flag: false })}>
@@ -84,10 +58,10 @@ const TextViewModal = ({ title, description, flag, setTodoContent, todoContent, 
                         </p>
 
                     </div>
-                    <div className="flex items-center p-2 justify-end border-t border-gray-200 rounded-b dark:border-gray-600">
-                        <TiEdit className='text-blue-600 text-3xl max-md:text-2xl max-sm:text-xl cursor-pointer' onClick={()=> updateNotes()}/>
-                        <MdDelete className='text-red-600 text-3xl max-md:text-2xl max-sm:text-xl cursor-pointer' onClick={()=> deleteTodo()}/>
-                    </div>
+                    {/* <div className="flex items-center p-2 justify-end border-t border-gray-200 rounded-b dark:border-gray-600">
+                        <TiEdit className='text-blue-600 text-3xl max-md:text-2xl max-sm:text-xl cursor-pointer' onClick={() => updateNotes()} />
+                        <MdDelete className='text-red-600 text-3xl max-md:text-2xl max-sm:text-xl cursor-pointer' onClick={() => deleteTodo()} />
+                    </div> */}
                 </div>
             </div>
         </div>

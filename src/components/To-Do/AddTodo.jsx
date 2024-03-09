@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { TodoContext } from '../../context/ToDoContext';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const AddTodo = () => {
   const _id = useId();
@@ -36,6 +35,11 @@ const AddTodo = () => {
   }, []);
 
 
+  useEffect(()=>{
+   localStorage.setItem("todos", JSON.stringify(todo))
+  },[todo]) 
+
+
   const handleSubmit = (e)=> {
     e.preventDefault()
     if (notes.title.length <= 3) {
@@ -61,9 +65,7 @@ const AddTodo = () => {
         theme: "light",
       });
     }
-
-    todo.push({title:notes.title, description:notes.description,_id})
-    setTodo(todo)
+    setTodo((preTodo) => [{title:notes.title, description:notes.description,_id},...preTodo])
 
     toast.success('Note Created sucessfully', {
       position: "top-right",
