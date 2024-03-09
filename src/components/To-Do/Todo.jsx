@@ -7,6 +7,7 @@ import { TodoContext } from '../../context/ToDoContext'
 import { UserContext } from '../../context/UserContext'
 import { ToastContainer, toast } from 'react-toastify';
 import { HiCreditCard } from "react-icons/hi2";
+import cogoToast from 'cogo-toast';
 
 const Todo = ({ note }) => {
   const { todo, setTodo } = useContext(TodoContext)
@@ -14,55 +15,27 @@ const Todo = ({ note }) => {
   const [isEditable, setIsEditable] = useState(false)
 
   const updateNotes = () => {
+    if (isEditable) {
+      cogoToast.success('Updated todo successfully.', {
+        position : 'top-right'
+      });
+    }
+    
     setTodo(todo.map((todo) => todo._id == todoContent._id ? todoContent : todo))
     setIsEditable(!isEditable)
-    toast.success('Note updated successfuly.', {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
-
   }
 
   const deleteTodo = (noteId) => {
-    toast.success('Note deleted successfully.', {
-      position: "top-right",
-      autoClose: 2000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
+    cogoToast.success('deleted todo successfully.',{
+      position : 'top-right'
     });
-
-
-    setTimeout(() => {
       let updatedData = todo.filter((note) => note._id !== noteId)
       setTodo(updatedData)
-    }, 100);
 
   }
 
   return (
     <>
-      <ToastContainer
-        position="bottom-left"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
       <TextViewModal title={todoContent.title} description={todoContent.description} todoId={todoContent._id} flag={todoContent.flag} setTodoContent={setTodoContent} todoContent={todoContent} />
       <div className='w-1/4 h-32 bg-black/5 max-sm:mx-3 my-4 mx-4 flex-wrap max-md:w-1/3 max-md:h-30 max-sm:my-5 max-sm:w-full flex justify-start items-center relative rounded-lg p-3 max-md:p-1 max-md:space-y-0 space-y-2 max-sm:1/2'>
         {
